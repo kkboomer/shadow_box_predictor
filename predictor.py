@@ -6,6 +6,7 @@ class Predictor:
         self.bigrams = {}
         self.trigrams = {}
         self.possible_moves = ['UP', 'DOWN', 'LEFT', 'RIGHT']
+        
     def update_history(self, move):
         self.unigrams[move] = self.unigrams.get(move, 0) + 1
         if len(self.history) >= 1:
@@ -24,6 +25,9 @@ class Predictor:
     def predict_next_move(self):
         counts = {}
         model = "random"
+        
+        if not self.history:
+            return random.choice(self.possible_moves), 0.25, model
         # we go down in cascading order from trigrams down to unigrams
         if len(self.history) >= 2:
             last_two_moves = tuple(self.history[-2:])
